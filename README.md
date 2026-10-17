@@ -19,12 +19,12 @@ Built-in IDs always win on collisions. Avoid renaming previously published IDs/n
 used by saved projects.
 
 The public raw content base URL is:
-`https://raw.githubusercontent.com/Tajuli/Digitor-Assets-/main`
+`https://raw.githubusercontent.com/Tajuli/DigitorAssets/main`
 
 App startup checks for updates once per six hours after success, retries on later
 launches after an hour if an update fails, and uses its offline cache when needed.
 
-Note: The repo name intentionally ends with a hyphen: `Digitor-Assets-`.
+Repository: [Tajuli/DigitorAssets](https://github.com/Tajuli/DigitorAssets).
 
 ## Downloadable `Test` motion effect
 
