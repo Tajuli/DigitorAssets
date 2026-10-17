@@ -1,46 +1,61 @@
-# Digitor Assets
+# DigitorAssets
 
-Public, data-only preset catalogs for [DigitorAndroid](https://github.com/Tajuli/DigitorAndroid).
+This public repository publishes validated, **data-only** transition/effect/filter
+recipes for [DigitorAndroid](https://github.com/Tajuli/DigitorAndroid).
+The native Android renderers and shaders are compiled into the app; uploading random
+shaders, binaries, model files or executable scripts here **does not install new engines**.
 
-The Android app downloads JSON recipes from the `main` branch using HTTPS and keeps the last
-successfully validated download cached in private app storage. GitHub updates can add presets
-implemented through existing compiled render engines; arbitrary shaders, native code,
-plugins or ML models **cannot** be loaded by these JSON files.
+## Mirrored editor categories
 
-## Catalog layout
+The directories match the tabs in the Android editor exactly:
 
-- `transitions/presets.json`: IDs, labels, categories (BASIC/CAMERA/EFFECT), and existing V22 engine styles.
-- `effects/presets.json`: effect names, categories (Basic/Glitch/Retro/Lens/Motion), and native effect vectors.
-- `filters/presets.json`: color LOOKS definitions with adjustment values and optional log wheels.
+- `effects/` (13): `Video Effect`, `Image Effect`, `Basic`, `Glitch`, `Retro`,
+  `Lens`, `Motion`, `Body`, `Eyes`, `Funny Faces`, `Glowing Lines`,
+  `Stroke`, `Clone`
+- `filters/` (2): `Looks`, `Beauty`
+- `transitions/` (3): `Basic`, `Camera`, `Effect`
 
-Each file requires `schemaVersion: 1` and a `presets` array. Limit: 200 entries and 256 KiB
-per category. The app checks allowed categories, values and schema before installing.
-Built-in IDs always win on collisions. Avoid renaming previously published IDs/names
-used by saved projects.
+Each folder has either a `presets.json` catalog or an empty-folder
+`.gitkeep` placeholder. The preexisting top-level
+`effects/presets.json`, `filters/presets.json`, and
+`transitions/presets.json` are kept for compatibility with early client builds;
+**the new manual-download client discovers only the per-category files.**
 
-The public raw content base URL is:
-`https://raw.githubusercontent.com/Tajuli/DigitorAssets/main`
+### Publish a downloadable preset
 
-App startup checks for updates once per six hours after success, retries on later
-launches after an hour if an update fails, and uses its offline cache when needed.
+1. In the chosen editor category folder, create or edit **`presets.json`**.
+2. Use `{"schemaVersion":1,"presets":[...]}`. Every entry must declare the
+   correct `category` (effects/transitions) or `group` (filters), matching its folder.
+3. Commit to `main`. Android can then discover a new file SHA in the **public GitHub
+   tree metadata** without downloading the actual file.
+4. The user opens that category in DigitorAndroid, sees **Download** or **Update**
+   and taps it, then confirms. Only this explicit action downloads the JSON.
+5. Once validated (size, schema, whitelisted algorithms and SHA), the presets
+   appear alongside built-in options. Approved downloads are cached for offline use.
 
-Repository: [Tajuli/DigitorAssets](https://github.com/Tajuli/DigitorAssets).
+If a folder only has `.gitkeep`, the app shows **No online assets**.
+If new assets are committed while the editor is open, tap **Refresh** to check
+GitHub metadata again. GitHub availability/rate limits can affect this check.
 
-## Downloadable `Test` motion effect
+Catalog restrictions: at most 256 KiB and 200 entries per folder; all numeric
+parameters are bounded. Only supported native effect vectors,
+`BEAT_CIRCLE_V1` animated motion, color `LOOKS`, whitelisted `BEAUTY`
+operations and existing V22 transition styles are supported. A folder name
+does not itself enable new ML, face tracking, custom shaders or new 3D engines.
+Unsupported recipes are rejected, not run.
 
-The effect preset `Test` is published under `effects/presets.json` in the Motion
-category. It uses the versioned `BEAT_CIRCLE_V1` recipe supported by
+### Example: Test effect
+
+[effects/Motion/presets.json](effects/Motion/presets.json) contains **Test**,
+a validated `BEAT_CIRCLE_V1` recipe:
+
+- Clear an initial blur over 2s
+- Small continuous 10s zoom oscillation
+- Slight shakes at detected strong audio onsets (no artificial beat on silence)
+- Subtle expanding circular ripple about every 4.8s
+
+This animated recipe requires the updated Android native renderer from
 [DigitorAndroid PR #108](https://github.com/Tajuli/DigitorAndroid/pull/108).
 
-- First 2 seconds of the effect bar: smooth heavy blur → clean.
-- Entire bar: restrained 10-second zoom in/out cycle.
-- Shake: slight movement on detected **strong music amplitude onsets** (waveform-derived,
-  not a fabricated fixed BPM). On silence or without detectable onsets there is no beat shake.
-- After reveal: subtle circular rings expand from one off-centre point approximately every 4.8s.
-- GPU preview, Media3 export and CPU fallback share the same effect-time schedule.
-  The CPU fallback uses beat events only if waveform analysis has already been cached.
-
-The `vector.blur` field is a backward-compatibility fallback for older catalog readers.
-Updated Android versions suppress that static fallback and render the timed motion recipe
-instead. The new motion algorithm does **not** become active until the application is built
-with the corresponding renderer changes; JSON cannot ship executable code.
+Raw GitHub base URL: `https://raw.githubusercontent.com/Tajuli/DigitorAssets/main`.
+No GitHub token is embedded in the application.
