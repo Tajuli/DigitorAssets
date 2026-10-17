@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "presets": [
+    {
+      "name": "Retro Drift",
+      "category": "Retro",
+      "vector": {
+        "grain": 0.35,
+        "vignette": 0.3,
+        "warm": 0.24,
+        "scanlines": 0.12
+      }
+    }
+  ]
+}

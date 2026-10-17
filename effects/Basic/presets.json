@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "presets": [
+    {
+      "name": "Aurora Glow",
+      "category": "Basic",
+      "vector": {
+        "glow": 0.58,
+        "blur": 0.13,
+        "warm": 0.12
+      }
+    }
+  ]
+}

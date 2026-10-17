@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "presets": [
+    {
+      "id": "soft_dissolve",
+      "label": "Soft Dissolve",
+      "category": "BASIC",
+      "engineStyle": "CROSS_DISSOLVE"
+    }
+  ]
+}
