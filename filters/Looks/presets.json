@@ -43,6 +43,16 @@
           "blue": 0.032
         }
       }
+    },
+    {
+      "id": "black_white_remote",
+      "name": "Black & White",
+      "description": "Pure monochrome grayscale with all color saturation removed",
+      "group": "LOOKS",
+      "defaultIntensity": 1,
+      "corrections": {
+        "saturation": -100
+      }
     }
   ]
 }
