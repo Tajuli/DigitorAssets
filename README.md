@@ -25,3 +25,22 @@ App startup checks for updates once per six hours after success, retries on late
 launches after an hour if an update fails, and uses its offline cache when needed.
 
 Note: The repo name intentionally ends with a hyphen: `Digitor-Assets-`.
+
+## Downloadable `Test` motion effect
+
+The effect preset `Test` is published under `effects/presets.json` in the Motion
+category. It uses the versioned `BEAT_CIRCLE_V1` recipe supported by
+[DigitorAndroid PR #108](https://github.com/Tajuli/DigitorAndroid/pull/108).
+
+- First 2 seconds of the effect bar: smooth heavy blur → clean.
+- Entire bar: restrained 10-second zoom in/out cycle.
+- Shake: slight movement on detected **strong music amplitude onsets** (waveform-derived,
+  not a fabricated fixed BPM). On silence or without detectable onsets there is no beat shake.
+- After reveal: subtle circular rings expand from one off-centre point approximately every 4.8s.
+- GPU preview, Media3 export and CPU fallback share the same effect-time schedule.
+  The CPU fallback uses beat events only if waveform analysis has already been cached.
+
+The `vector.blur` field is a backward-compatibility fallback for older catalog readers.
+Updated Android versions suppress that static fallback and render the timed motion recipe
+instead. The new motion algorithm does **not** become active until the application is built
+with the corresponding renderer changes; JSON cannot ship executable code.
